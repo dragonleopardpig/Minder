@@ -16,6 +16,7 @@ namespace MinderTest {
       this.add_test( "invalid-source", test_invalid_source );
       this.add_test( "escaped-delimiters", test_escaped_delimiters );
       this.add_test( "position", test_position );
+      this.add_test( "display-environments", test_display_environments );
     }
 
     private void test_valid_source() {
@@ -44,6 +45,27 @@ namespace MinderTest {
       Assert.true( LatexSpanParser.is_latex_at( source, source.index_of( "x_1" ) ) );
       Assert.false( LatexSpanParser.is_latex_at( source, source.last_index_of( "$$" ) ) );
       Assert.true( LatexSpanParser.is_latex_at( "pending $$x", 11 ) );
+    }
+
+    private void test_display_environments() {
+      Assert.string_compare(
+        "\\begin{aligned}x&=1\\\\y&=2\\end{aligned}",
+        LatexSpanParser.normalize_expression(
+          "\\begin{align*}x&=1\\\\y&=2\\end{align*}"
+        )
+      );
+      Assert.string_compare(
+        "\\begin{gathered}x\\\\y\\end{gathered}",
+        LatexSpanParser.normalize_expression(
+          "\\begin{gather}x\\\\y\\end{gather}"
+        )
+      );
+      Assert.string_compare(
+        "\\begin{array}{cc}x&y\\end{array}",
+        LatexSpanParser.normalize_expression(
+          "\\begin{array}{cc}x&y\\end{array}"
+        )
+      );
     }
 
   }

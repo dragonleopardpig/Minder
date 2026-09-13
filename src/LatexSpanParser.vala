@@ -25,6 +25,24 @@
 public class LatexSpanParser {
 
   //-------------------------------------------------------------
+  // Converts display-only environments into equivalents which can be
+  // embedded in the renderer's math box.  Formula recognizers commonly
+  // return align/align* for multi-line expressions, but LaTeX does not allow
+  // those environments inside \(...\).
+  public static string normalize_expression( string expression ) {
+    var normalized = expression;
+    normalized = normalized.replace( "\\begin{align*}", "\\begin{aligned}" );
+    normalized = normalized.replace( "\\end{align*}",   "\\end{aligned}" );
+    normalized = normalized.replace( "\\begin{align}",  "\\begin{aligned}" );
+    normalized = normalized.replace( "\\end{align}",    "\\end{aligned}" );
+    normalized = normalized.replace( "\\begin{gather*}", "\\begin{gathered}" );
+    normalized = normalized.replace( "\\end{gather*}",   "\\end{gathered}" );
+    normalized = normalized.replace( "\\begin{gather}",  "\\begin{gathered}" );
+    normalized = normalized.replace( "\\end{gather}",    "\\end{gathered}" );
+    return( normalized );
+  }
+
+  //-------------------------------------------------------------
   // Returns the next unescaped $$ delimiter at or after offset.
   public static int find_delimiter( string source, int offset ) {
     var delimiter = source.index_of( "$$", offset );

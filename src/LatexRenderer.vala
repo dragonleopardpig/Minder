@@ -157,7 +157,9 @@ public class LatexRenderer : Object {
         break;
       }
       var end        = close + 2;
-      var expression = source.substring( start + 2, close - start - 2 ).strip();
+      var expression = LatexSpanParser.normalize_expression(
+        source.substring( start + 2, close - start - 2 ).strip()
+      );
       if( expression == "" ) {
         offset = end;
         continue;
