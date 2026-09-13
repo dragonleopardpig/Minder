@@ -72,11 +72,11 @@ is drawn as an inline scalable SVG. If the LaTeX tools are unavailable or an
 expression is invalid, Minder leaves that source visible.
 
 If the optional `formulaocr-offline` command is installed, pasting a formula
-image with **Ctrl+Shift+V** converts it locally to editable `$$...$$` source
-and then renders it as SVG. Ordinary **Ctrl+V** keeps its usual behavior,
-including pasting clipboard images as images. Recognition is asynchronous and
-does not require an internet connection. Set `MINDER_FORMULA_OCR` to select a
-different local recognizer executable.
+image with **Ctrl+Alt+V** converts it locally to editable `$$...$$` source and
+then renders it as SVG. Ordinary **Ctrl+V** keeps its usual behavior, while
+**Ctrl+Shift+V** retains Paste and Replace and **Ctrl+Y** retains Paste Node
+Link. Recognition is asynchronous and does not require an internet connection.
+Set `MINDER_FORMULA_OCR` to select a different local recognizer executable.
 
 To install, run `sudo ./app install` and then run the application from your application launcher or from
 the command-line with `./app run`.  If you want to debug with gdb using this build, run `./app debug`.
