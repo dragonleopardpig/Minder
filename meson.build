@@ -79,6 +79,8 @@ test_executable = executable(
   test_vala_sources,
   files(
     'src/LatexSpanParser.vala',
+    'src/ImageManager.vala',
+    'src/NodeImage.vala',
     'src/NodeTableModel.vala',
   ),
   dependencies: dependencies,
