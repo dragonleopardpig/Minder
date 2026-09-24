@@ -14,7 +14,7 @@ Use the power of mind-mapping to make your ideas come to life.
 - Choose from many tree layout choices.
 - Support for Markdown formatting.
 - Support for insertion of Unicode characters.
-- Typeset inline LaTeX expressions to scalable SVG using `$$...$$` delimiters.
+- Typeset inline LaTeX expressions to scalable SVG using `$...$` or `$$...$$` delimiters.
 - Add notes, tasks, resolution-independent SVG images, and editable tables to your nodes.
 - Add node-to-node connections with optional text and notes.
 - Stylize nodes, callouts, links and connections to add more meaning and improve readability.
@@ -59,7 +59,7 @@ You will need the following dependencies to build Minder:
 * A LaTeX installation providing `latex`, `amsmath`, `amssymb` and `dvisvgm`
 
 To typeset a formula in a node, connection title, or callout, surround it with
-`$$` delimiters. Formulas can be mixed with ordinary text and more than one can
+standard `$...$` inline delimiters or `$$...$$` delimiters. Formulas can be mixed with ordinary text and more than one can
 be used in a text value. For example:
 
 ```latex
@@ -69,7 +69,8 @@ This is a formula $$\frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
 Minder displays the source while it is being edited. When editing finishes,
 ordinary and Markdown-formatted text remains native Pango text and each formula
 is drawn as an inline scalable SVG. If the LaTeX tools are unavailable or an
-expression is invalid, Minder leaves that source visible.
+expression is invalid, Minder leaves that source visible. Use `\$` for a
+literal dollar sign when needed; the escape is hidden when editing finishes.
 
 If the optional `formulaocr-offline` command is installed, pasting a formula
 image with **Ctrl+Alt+V** converts it locally to editable `$$...$$` source and
@@ -91,7 +92,7 @@ the mind-map and included in Markdown and plain-text exports. Use **Undo Table
 Edit** or `Ctrl+Z` to undo typing, formatting, and structural changes before
 applying the table. Cell text also
 supports Unicode, emoji insertion and completion, and inline LaTeX using the
-same `$$...$$` delimiters as node titles. Use the table formatting toolbar to
+same `$...$` or `$$...$$` delimiters as node titles. Use the table formatting toolbar to
 align selected cells left, center, or right and to apply bold, italic,
 underline, or strikethrough formatting. Use **Highlight Cells** to mark any
 selected cells as headers; highlights are stored per cell and remain under
