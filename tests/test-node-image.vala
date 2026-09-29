@@ -24,6 +24,7 @@ namespace MinderTest {
       this.add_test( "svg-crop", test_svg_crop );
       this.add_test( "svg-transparency", test_svg_transparency );
       this.add_test( "svg-color-scheme", test_svg_color_scheme );
+      this.add_test( "raster-trace", test_raster_trace );
       this.add_test( "resizable-xml", test_resizable_xml );
       this.add_test( "png-raster-output", test_png_raster_output );
     }
@@ -206,6 +207,53 @@ namespace MinderTest {
       );
       var exported_alpha = pixel_channel( exported, 70, 70, 3 );
       Assert.true( (exported_alpha >= 126) && (exported_alpha <= 129) );
+    }
+
+    private void test_raster_trace() {
+      if( !RasterVectorizer.available() ) {
+        Test.skip( "Potrace is not installed" );
+        return;
+      }
+
+      var raster = new Pixbuf( Colorspace.RGB, true, 8, 64, 32 );
+      raster.fill( 0x00000000 );
+      unowned uint8[] pixels = raster.get_pixels();
+      for( int row=8; row<24; row++ ) {
+        for( int column=8; column<56; column++ ) {
+          var pixel = (row * raster.rowstride) + (column * 4);
+          pixels[pixel + 3] = 255;
+        }
+      }
+
+      string? svg = null;
+      string? error_message = null;
+      var loop = new MainLoop();
+      RasterVectorizer.convert.begin( raster, (source, result) => {
+        try {
+          svg = RasterVectorizer.convert.end( result );
+        } catch( Error error ) {
+          error_message = error.message;
+        }
+        loop.quit();
+      });
+      loop.run();
+
+      Assert.true( error_message == null );
+      Assert.true( svg != null );
+      Assert.true( svg.contains( "<path" ) );
+      Assert.true( svg.contains( "prefers-color-scheme" ) );
+      Assert.false( svg.contains( "<image" ) );
+
+      var manager = new ImageManager();
+      manager.set_image_dir( _temp_dir );
+      var id = manager.add_svg( svg );
+      var image = new NodeImage( manager, id, 64 );
+      Assert.true( image.valid && image.vector );
+      var light = image.get_orig_pixbuf();
+      var dark = image.get_orig_pixbuf( true );
+      Assert.int_compare( 0, pixel_channel( light, 0, 0, 3 ) );
+      Assert.true( pixel_channel( light, 512, 256, 0 ) < 32 );
+      Assert.true( pixel_channel( dark, 512, 256, 0 ) > 224 );
     }
 
     private void test_svg_color_scheme() {

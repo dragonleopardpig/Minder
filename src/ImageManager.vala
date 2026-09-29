@@ -346,6 +346,19 @@ public class ImageManager {
     return( item.id );
   }
 
+  public int add_svg( string svg ) {
+    var item = new ImageItem( this, "" );
+    item.ext = ".svg";
+    try {
+      FileUtils.set_contents( item.get_path(), svg );
+      _images.append_val( item );
+      return( item.id );
+    } catch( Error e ) {
+      warning( "Unable to save traced SVG: %s", e.message );
+      return( -1 );
+    }
+  }
+
   //-------------------------------------------------------------
   // Returns the full pathname of the stored file for the given
   // image ID

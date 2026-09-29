@@ -2796,6 +2796,24 @@ public class MapModel {
     }
   }
 
+  public bool paste_svg_in_node( Node node, string svg ) {
+    if( get_node( _nodes, node.id() ) != node ) return( false );
+    var id = image_manager.add_svg( svg );
+    if( id == -1 ) return( false );
+    var image = new NodeImage( image_manager, id, node.style.node_width );
+    if( !image.valid ) {
+      image_manager.set_valid( id, false );
+      return( false );
+    }
+    var orig_image = node.image;
+    node.set_image( image_manager, image );
+    _map.add_undo( new UndoNodeImage( node, orig_image ) );
+    queue_draw();
+    current_changed();
+    auto_save();
+    return( true );
+  }
+
   //-------------------------------------------------------------
   // Called by the clipboard to paste nodes.
   public void paste_nodes( string text, bool shift ) {

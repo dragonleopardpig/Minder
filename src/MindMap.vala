@@ -1052,6 +1052,10 @@ public class MindMap {
     MinderClipboard.paste( this, false, true );
   }
 
+  public void do_paste_vector() {
+    MinderClipboard.paste_vector( this );
+  }
+
   //-------------------------------------------------------------
   // Paste the current node as a node link in the current node.
   public void do_paste_node_link() {

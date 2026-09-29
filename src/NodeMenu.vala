@@ -37,6 +37,7 @@ public class NodeMenu : BaseMenu {
     append_menu_item( _edit_menu, KeyCommand.EDIT_CUT,           _( "Cut" ) );
     append_menu_item( _edit_menu, KeyCommand.EDIT_PASTE,         _( "Paste" ) );
     append_menu_item( _edit_menu, KeyCommand.NODE_PASTE_REPLACE, _( "Paste and Replace Node" ) );
+    append_menu_item( _edit_menu, KeyCommand.EDIT_PASTE_VECTOR,  _( "Paste Image as SVG in Node" ) );
     append_menu_item( _edit_menu, KeyCommand.NODE_REMOVE,        _( "Delete" ) );
     append_menu_item( _edit_menu, KeyCommand.NODE_REMOVE_ONLY,   _( "Delete Single Node" ) );
 
@@ -272,6 +273,7 @@ public class NodeMenu : BaseMenu {
     set_enabled( KeyCommand.EDIT_CUT,                  map.editable );
     set_enabled( KeyCommand.EDIT_PASTE,                (node_pasteable && map.editable) );
     set_enabled( KeyCommand.NODE_PASTE_REPLACE,        (node_pasteable && map.editable) );
+    set_enabled( KeyCommand.EDIT_PASTE_VECTOR,         (MinderClipboard.image_pasteable() && map.editable) );
     set_enabled( KeyCommand.NODE_REMOVE,               map.editable );
     set_enabled( KeyCommand.NODE_REMOVE_ONLY,          map.editable );
     set_enabled( KeyCommand.EDIT_SELECTED,             map.editable );

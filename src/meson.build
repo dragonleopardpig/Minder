@@ -59,6 +59,7 @@ sources += files(
     'Partitioner.vala',
     'Preferences.vala',
     'QuickEntry.vala',
+    'RasterVectorizer.vala',
     'Selection.vala',
     'SequenceNum.vala',
     'Shortcuts.vala',

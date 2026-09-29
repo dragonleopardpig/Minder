@@ -79,6 +79,12 @@ then renders it as SVG. Ordinary **Ctrl+V** keeps its usual behavior, while
 Link. Recognition is asynchronous and does not require an internet connection.
 Set `MINDER_FORMULA_OCR` to select a different local recognizer executable.
 
+With Potrace installed, select a node and press **Alt+V** to trace a clipboard
+image into a transparent SVG in that node. The SVG uses dark strokes on light
+themes and light strokes on dark themes. The existing node image is replaced,
+and the change can be undone. Tracing runs locally without an internet connection.
+Set `MINDER_POTRACE` to select a different Potrace executable.
+
 ### Tables in nodes
 
 Right-click a node and choose **Change Node → Add Table…** to display an

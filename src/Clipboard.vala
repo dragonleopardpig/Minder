@@ -154,6 +154,45 @@ public class MinderClipboard {
 
   }
 
+  public static void paste_vector( MindMap map ) {
+    var node = map.selected.current_node();
+    if( node == null ) return;
+    if( !RasterVectorizer.available() ) {
+      map.win.notification( _( "Unable to trace image" ), _( "Potrace is not installed" ) );
+      return;
+    }
+    if( !image_pasteable() ) {
+      map.win.notification( _( "Unable to trace image" ), _( "Clipboard has no image" ) );
+      return;
+    }
+
+    var clipboard = Display.get_default().get_clipboard();
+    clipboard.read_texture_async.begin( null, (object, result) => {
+      try {
+        var texture = clipboard.read_texture_async.end( result );
+        if( texture == null ) return;
+        var image = Utils.texture_to_pixbuf( texture );
+        map.win.notification( _( "Tracing image" ), _( "Converting clipboard image to SVG locally" ) );
+        RasterVectorizer.convert.begin( image, (source, conversion_result) => {
+          try {
+            var svg = RasterVectorizer.convert.end( conversion_result );
+            if( map.model.paste_svg_in_node( node, svg ) ) {
+              map.win.notification( _( "Vector image pasted" ), _( "The selected node now contains an SVG image" ) );
+            } else {
+              map.win.notification( _( "Unable to paste SVG" ), _( "The selected node is no longer available" ) );
+            }
+          } catch( Error error ) {
+            warning( "Unable to trace clipboard image: %s", error.message );
+            map.win.notification( _( "Unable to trace image" ), error.message );
+          }
+        });
+      } catch( Error error ) {
+        warning( "Unable to read clipboard image: %s", error.message );
+        map.win.notification( _( "Unable to read image" ), error.message );
+      }
+    });
+  }
+
   //-------------------------------------------------------------
   // Returns a node link to the first node in the clipboard
   public static void paste_node_link( MindMap map ) {

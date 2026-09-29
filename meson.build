@@ -81,6 +81,7 @@ test_executable = executable(
     'src/LatexSpanParser.vala',
     'src/ImageManager.vala',
     'src/NodeImage.vala',
+    'src/RasterVectorizer.vala',
     'src/NodeTableModel.vala',
   ),
   dependencies: dependencies,
