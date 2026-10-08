@@ -24,7 +24,9 @@ using GLib;
 // Runs the optional local formula recognizer without blocking the UI.
 public class FormulaRecognizer : Object {
 
-  private const int COMMAND_TIMEOUT  = 30;
+  // A cold start of the recognizer plus CPU inference of a multi-line formula
+  // takes 15-40 seconds on a busy desktop; this only has to catch a hang.
+  private const int COMMAND_TIMEOUT  = 120;
   private const int MAX_OUTPUT_BYTES = 32768;
   private static bool _busy          = false;
 
